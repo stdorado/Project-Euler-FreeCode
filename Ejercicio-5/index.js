@@ -4,41 +4,20 @@ What is the smallest positive number that is evenly divisible by all of the numb
 
 */
 
-function smallestDivisible(limit) {
-    var i, n = 1;
-
-    function largestPower(n, limit) {
-        var p, e = 2, largest = n;
-        while ((p = Math.pow(n, e)) <= limit) {
-            largest = p;
-            e += 1;
-        }
-        return largest;
+function smallestMult(n) {
+    // Función para calcular el máximo común divisor
+    function gcd(a, b) {
+        return b === 0 ? a : gcd(b, a % b);
     }
 
-    function isPrime(n) {
-        if (n <= 1) return false;
-        if (n <= 3) return true;
-        if (n % 2 === 0 || n % 3 === 0) return false;
-        var i = 5;
-        while (i * i <= n) {
-            if (n % i === 0 || n % (i + 2) === 0) return false;
-            i += 6;
-        }
-        return true;
+    // Función para calcular el mínimo común múltiplo
+    function lcm(a, b) {
+        return (a * b) / gcd(a, b);
     }
 
-    for (i = 2; i <= limit; i++) {
-        if (isPrime(i)) {
-            n *= largestPower(i, limit);
-        }
+    let result = 1;
+    for (let i = 2; i <= n; i++) {
+        result = lcm(result, i);
     }
-
-    return n;
+    return result;
 }
-
-console.log(smallestDivisible(5)); // 60
-console.log(smallestDivisible(7)); // 420
-console.log(smallestDivisible(10)); // 2520
-console.log(smallestDivisible(13)); // 360360
-console.log(smallestDivisible(20)); // 232792560
